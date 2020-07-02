@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Map Search</string>
+    <string name="add_address">Введите адрес или координаты</string>
+    <string name="search">Ищем</string>
+</resources>
