@@ -12,6 +12,8 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
+    private EditText address;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,15 +23,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        EditText addAddress = findViewById(R.id.et_address);
+        address = findViewById(R.id.et_address);
         Button search = findViewById(R.id.btn_search);
+
+        final String text = address.getText().toString();
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Character.isLetter('t')) {
+                if (text.length() > 0 && Character.isLetter(text.charAt(0))) {
                     searchByCoordinates();
-                } else if (Character.isLetter(0)) {
+                } else {
                     searchByName();
                 }
             }
