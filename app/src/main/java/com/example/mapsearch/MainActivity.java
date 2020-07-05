@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int COORDINATES_LENGTH = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,32 +24,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        EditText address = findViewById(R.id.et_address);
+        final EditText address = findViewById(R.id.et_address);
         Button search = findViewById(R.id.btn_search);
-
-        final String text = address.getText().toString();
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent openMap = new Intent();
-                openMap.setAction(Intent.ACTION_VIEW);
+                Intent openMap = new Intent(Intent.ACTION_VIEW);
+                final String text = address.getText().toString();
+
+                Uri uri;
                 if (text.length() > 0 && Character.isLetter(text.charAt(0))) {
-                    Uri uri = Uri.parse("geo:55.704968, 69.625206");
-                    openMap.setData(uri);
-                    if (openMap.resolveActivity(getPackageManager()) != null) {
-                        startActivity(openMap);
-                    } else {
-                        Log.d("Intent", "Browser not found");
-                    }
+                    uri = Uri.parse("geo:?q=" + text);
                 } else {
-                    Uri uri = Uri.parse("geo:?q=Moscow");
-                    openMap.setData(uri);
-                    if (openMap.resolveActivity(getPackageManager()) != null) {
-                        startActivity(openMap);
-                    } else {
-                        Log.d("Intent", "Browser not found");
+                    String[] coordinates = text.split(",");
+                    if (coordinates.length != COORDINATES_LENGTH) {
+                        Toast.makeText(MainActivity.this, R.string.enter_two_coordinates, Toast.LENGTH_SHORT).show();
+                        return;
                     }
+                    uri = Uri.parse("geo:" + coordinates[0] + "," + coordinates[1]);
+                }
+
+                openMap.setData(uri);
+                if (openMap.resolveActivity(getPackageManager()) != null) {
+                    startActivity(openMap);
+                } else {
+                    Toast.makeText(MainActivity.this, R.string.no_maps, Toast.LENGTH_SHORT).show();
+                    Log.d("Intent", "Browser not found");
                 }
             }
         });

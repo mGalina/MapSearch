@@ -2,4 +2,6 @@
     <string name="app_name">Map Search</string>
     <string name="add_address">Введите адрес или координаты</string>
     <string name="search">Ищем</string>
+    <string name="enter_two_coordinates">Введите 2 координаты через запятую</string>
+    <string name="no_maps">У вас нет приложения с картами</string>
 </resources>
